@@ -34,7 +34,7 @@ jobs:
         mkdir ./bin/win
         ./build.sh exec "version; GOOS=windows GOARCH=amd64 go build -o ./bin/win ./..."
         zip -j -v ${{ steps.config_values.outputs.REPOSITORY_NAME }}-${{ steps.config_values.outputs.TAG_NAME }}-x86_64-windows.zip \
-          bin/win/${{ steps.config_values.outputs.REPOSITORY_NAME }}
+          bin/win/${{ steps.config_values.outputs.REPOSITORY_NAME }}.exe
 
 # release
 # ----------------------------------------------------
