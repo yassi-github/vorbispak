@@ -1,7 +1,7 @@
 name: Test
 on: push
 jobs:
-  dotsyaml-test:
+  vorbispak-test:
     runs-on: ubuntu-latest
     steps:
 

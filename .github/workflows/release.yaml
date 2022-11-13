@@ -4,7 +4,7 @@ on:
     tags:
     - 'v*.*.*'
 jobs:
-  dotsyaml-release:
+  vorbispak-release:
     runs-on: ubuntu-latest
     steps:
 
@@ -32,7 +32,7 @@ jobs:
     - name: build-win
       run: |
         mkdir ./bin/win
-    		./build.sh exec "version; GOOS=windows GOARCH=amd64 go build -o ./bin/win ./..."
+        ./build.sh exec "version; GOOS=windows GOARCH=amd64 go build -o ./bin/win ./..."
         zip -j -v ${{ steps.config_values.outputs.REPOSITORY_NAME }}-${{ steps.config_values.outputs.TAG_NAME }}-x86_64-windows.zip \
           bin/win/${{ steps.config_values.outputs.REPOSITORY_NAME }}
 
