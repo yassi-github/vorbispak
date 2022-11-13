@@ -1,0 +1,41 @@
+name: Release
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+jobs:
+  dotsyaml-release:
+    runs-on: ubuntu-latest
+    steps:
+
+# checkout
+# ----------------------------------------------------
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: Create config values
+      id: config_values
+      run: |
+        TAG_NAME=${{ github.ref_name }}
+        REPOSITORY_NAME=$(echo ${GITHUB_REPOSITORY} | cut -d'/' -f2)
+        echo "::set-output name=TAG_NAME::${TAG_NAME}"
+        echo "::set-output name=REPOSITORY_NAME::${REPOSITORY_NAME}"
+
+# build
+# ----------------------------------------------------
+    - name: build
+      run: |
+        ./build.sh build
+        zip -j -v ${{ steps.config_values.outputs.REPOSITORY_NAME }}-${{ steps.config_values.outputs.TAG_NAME }}-x86_64-linux.zip \
+          bin/${{ steps.config_values.outputs.REPOSITORY_NAME }}
+
+# release
+# ----------------------------------------------------
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        body: ':rocket: release'
+        files: |
+          *.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

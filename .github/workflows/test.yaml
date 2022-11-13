@@ -1,0 +1,21 @@
+name: Test
+on: push
+jobs:
+  dotsyaml-test:
+    runs-on: ubuntu-latest
+    steps:
+
+# checkout
+# ----------------------------------------------------
+    - name: checkout
+      uses: actions/checkout@v2
+
+# test
+# ----------------------------------------------------
+    - name: test
+      run: ./build.sh test ./...
+
+# build
+# ----------------------------------------------------
+    - name: build
+      run: ./build.sh build
