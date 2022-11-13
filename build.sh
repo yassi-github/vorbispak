@@ -58,7 +58,7 @@ case ${SUBCMD} in
     ;;
 
 	"clean" )
-		rm -f go.sum bin/*
+		rm -rf go.sum bin/*
 	;;
 
 	"exec" )
