@@ -43,7 +43,7 @@ func main() {
 					&cli.StringFlag{
 						Name:        "index-file",
 						Aliases:     []string{"i"},
-						Usage:       "index file `path` to input",
+						Usage:       "[WIP] index file `path` to input",
 						Destination: &ifile,
 					},
 				},
@@ -79,7 +79,7 @@ func main() {
 					&cli.StringFlag{
 						Name:        "index-file",
 						Aliases:     []string{"i"},
-						Usage:       "index file `path` to output",
+						Usage:       "[WIP] index file `path` to output",
 						Destination: &ifile,
 					},
 				},
