@@ -61,7 +61,7 @@ func main() {
 			},
 			{
 				Name:  "merge",
-				Usage: "merge ogg vorbis files to pak file",
+				Usage: "[WIP] merge ogg vorbis files to pak file",
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:        "out",
