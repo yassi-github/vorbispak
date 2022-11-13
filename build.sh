@@ -49,6 +49,10 @@ case ${SUBCMD} in
 		exec_go_with_stdoutput 'get -u ./... && go mod tidy && go build -o bin/ ./...'
 	;;
 
+    "try" )
+        ./build.sh build && ./bin/try ${ARGS}
+    ;;
+
     "run" )
         ./build.sh build && ./bin/${CMD_NAME} ${ARGS}
     ;;
