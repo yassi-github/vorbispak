@@ -3,6 +3,7 @@ package cut
 import (
 	"fmt"
 	"path/filepath"
+	"math"
 
 	"golang.org/x/exp/constraints"
 )
@@ -24,17 +25,20 @@ func CutFile2Map(bof_oggs_symbol_idx_list []uint32, pname, out string, pak_file 
 	bof_ogg_index_list_header_aligned = bof_ogg_index_list_header_aligned[1:]
 
 	old_ogg_index := uint32(0)
+	
+	max_keta := int(math.Log10(float64(len(bof_ogg_index_list_header_aligned)))) + 1
+	file_idx_fmt := "%" + fmt.Sprintf("0%v", max_keta) + "d"
 	for file_idx, ogg_index := range bof_ogg_index_list_header_aligned {
 		// ogg_index is actual index but `pak_file` is relative index data
 		single_ogg_data := pak_file[:ogg_index - old_ogg_index]
 		// os.WriteFile(fmt.Sprintf("./fixtures/out_%v.ogg", file_idx), single_ogg_data, os.ModePerm)
-		path_body_map[filepath.Join(out, fmt.Sprintf("%v%v.ogg", pname, file_idx))] = single_ogg_data
+		path_body_map[filepath.Join(out, pname + fmt.Sprintf(file_idx_fmt+".ogg", file_idx))] = single_ogg_data
 		// cut off already found data
 		pak_file = pak_file[ogg_index - old_ogg_index:]
 		old_ogg_index = ogg_index
 	}
 	// till EOF
-	path_body_map[filepath.Join(out, fmt.Sprintf("%v%v.ogg", pname, len(bof_ogg_index_list_header_aligned)))] = pak_file[:]
+	path_body_map[filepath.Join(out, pname + fmt.Sprintf(file_idx_fmt+".ogg", len(bof_ogg_index_list_header_aligned)))] = pak_file[:]
 
 	return path_body_map, nil
 }
