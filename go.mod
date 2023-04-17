@@ -3,8 +3,8 @@ module github.com/yassi-github/vorbispak
 go 1.19
 
 require (
-	github.com/urfave/cli/v2 v2.23.5
-	golang.org/x/exp v0.0.0-20221111204811-129d8d6c17ab
+	github.com/urfave/cli/v2 v2.25.1
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 )
 
 require (
