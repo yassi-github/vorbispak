@@ -24,7 +24,7 @@ go() {
 	-v $(realpath "${PWD}"):${PWD} \
 	-w $(realpath "${PWD}") \
 	golang:latest \
-	sh -c "go $@ ; echo \$? > /tmp/EXITCODE && chown $(id -u) ./* ; chgrp $(id -g) ./* ; cat /tmp/EXITCODE"
+	sh -c "export GOFLAGS='-buildvcs=false' ; go $@ ; echo \$? > /tmp/EXITCODE && chown $(id -u) ./* ; chgrp $(id -g) ./* ; cat /tmp/EXITCODE"
 }
 
 exec_go_with_stdoutput() {
@@ -46,7 +46,7 @@ exec_go_with_stdoutput() {
 
 case ${SUBCMD} in
 	"build" )
-		exec_go_with_stdoutput 'get -u ./... && go mod tidy && go build -buildvcs=false -o bin/ ./...'
+		exec_go_with_stdoutput 'get -u ./... && go mod tidy && go build -o bin/ ./...'
 	;;
 
     "try" )
