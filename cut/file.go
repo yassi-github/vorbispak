@@ -8,7 +8,7 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
-func CutFile2Map(bof_oggs_symbol_idx_list []uint32, pname, out string, pak_file []byte) (path_body_map map[string]interface{}, err error) {
+func CutFile2Map(bof_oggs_symbol_idx_list []uint32, pname, out, ext string, pak_file []byte) (path_body_map map[string]interface{}, err error) {
 	path_body_map = make(map[string]interface{}, 0)
 
 	// remove non-ogg header
@@ -32,13 +32,13 @@ func CutFile2Map(bof_oggs_symbol_idx_list []uint32, pname, out string, pak_file 
 		// ogg_index is actual index but `pak_file` is relative index data
 		single_ogg_data := pak_file[:ogg_index - old_ogg_index]
 		// os.WriteFile(fmt.Sprintf("./fixtures/out_%v.ogg", file_idx), single_ogg_data, os.ModePerm)
-		path_body_map[filepath.Join(out, pname + fmt.Sprintf(file_idx_fmt+".ogg", file_idx))] = single_ogg_data
+		path_body_map[filepath.Join(out, pname + fmt.Sprintf(file_idx_fmt + "." + ext, file_idx))] = single_ogg_data
 		// cut off already found data
 		pak_file = pak_file[ogg_index - old_ogg_index:]
 		old_ogg_index = ogg_index
 	}
 	// till EOF
-	path_body_map[filepath.Join(out, pname + fmt.Sprintf(file_idx_fmt+".ogg", len(bof_ogg_index_list_header_aligned)))] = pak_file[:]
+	path_body_map[filepath.Join(out, pname + fmt.Sprintf(file_idx_fmt + "." + ext, len(bof_ogg_index_list_header_aligned)))] = pak_file[:]
 
 	return path_body_map, nil
 }

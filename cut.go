@@ -13,12 +13,12 @@ func Cut(out, pname, ifile, pak_file_path string) (exitcode int, err error) {
 		return 1, err
 	}
 
-	bof_oggs_symbol_idx_list, err := cut.FindOggsBofList(pak_file)
+	bof_symbol_idx_list, ext, err := cut.FindBofList(pak_file)
 	if err != nil {
 		return 1, err
 	}
 
-	path_body_map, err := cut.CutFile2Map(bof_oggs_symbol_idx_list, pname, out, pak_file)
+	path_body_map, err := cut.CutFile2Map(bof_symbol_idx_list, pname, out, ext, pak_file)
 	if err != nil {
 		return 1, err
 	}
