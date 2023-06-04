@@ -24,7 +24,7 @@ go() {
 	-v $(realpath "${PWD}"):${PWD} \
 	-w $(realpath "${PWD}") \
 	golang:latest \
-	sh -c "export GOFLAGS='-buildvcs=false' ; go $@ ; echo \$? > /tmp/EXITCODE && chown $(id -u) ./* ; chgrp $(id -g) ./* ; cat /tmp/EXITCODE" \
+	sh -c "export GOFLAGS='-buildvcs=false' PATH=\$PATH:/go/bin ; go $@ ; echo \$? > /tmp/EXITCODE && chown $(id -u) ./* ; chgrp $(id -g) ./* ; cat /tmp/EXITCODE" \
   | tr -d '\r'
 }
 
