@@ -24,7 +24,8 @@ go() {
 	-v $(realpath "${PWD}"):${PWD} \
 	-w $(realpath "${PWD}") \
 	golang:latest \
-	sh -c "export GOFLAGS='-buildvcs=false' ; go $@ ; echo \$? > /tmp/EXITCODE && chown $(id -u) ./* ; chgrp $(id -g) ./* ; cat /tmp/EXITCODE"
+	sh -c "export GOFLAGS='-buildvcs=false' ; go $@ ; echo \$? > /tmp/EXITCODE && chown $(id -u) ./* ; chgrp $(id -g) ./* ; cat /tmp/EXITCODE" \
+  | tr -d '\r'
 }
 
 exec_go_with_stdoutput() {
@@ -36,7 +37,7 @@ exec_go_with_stdoutput() {
 	rm -f ${tmpfile}
 
 	# ignore exitcode
-	[[ "${STDOUT}" =~ ^[0-9]*$ ]] || echo "${STDOUT}" | sed "$ d"
+	[[ "${STDOUT}" =~ ^[0-9]*$ ]] || ( [[ "$(echo "${STDOUT}" | tail -n 2 | head -n +1 )" = "" ]] && echo "${STDOUT}" | head -n -2 || echo "${STDOUT}" | head -n -1 )
 	# stderr if exists
 	[[ "${STDERR}" != "" ]] && echo "${STDERR}" >&2
 
