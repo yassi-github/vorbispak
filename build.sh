@@ -16,15 +16,19 @@ ARGS="$@"
 
 CMD_NAME="vorbispak"
 
+EXEC_UID=${SUDO_UID-$(id -u)}
+EXEC_GID=${SUDO_GID-$(id -g)}
+EXEC_HOME="~${SUDO_USER-${USER}}"
+
 # go command by docker.
 go() {
   docker run -i --rm \
-	-v $(realpath "${HOME}")/go:/go \
+    -v $(eval echo "${EXEC_HOME}")/go:/go \
 	-v $(realpath "${HOME}")/.ssh:/root/.ssh \
 	-v $(realpath "${PWD}"):${PWD} \
 	-w $(realpath "${PWD}") \
 	golang:latest \
-	sh -c "export GOFLAGS='-buildvcs=false' PATH=\$PATH:/go/bin ; go $@ ; echo \$? > /tmp/EXITCODE && chown $(id -u) ./* ; chgrp $(id -g) ./* ; cat /tmp/EXITCODE" \
+	sh -c "export GOFLAGS='-buildvcs=false' PATH=\$PATH:/go/bin ; go $@ ; echo \$? > /tmp/EXITCODE ; chown -R ${EXEC_UID} ./ ; chgrp -R ${EXEC_UID} ./ ; cat /tmp/EXITCODE" \
   | tr -d '\r'
 }
 
